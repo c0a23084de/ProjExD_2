@@ -5,7 +5,7 @@ import pygame as pg
 import time
 
 
-WIDTH, HEIGHT = 1400, 800
+WIDTH, HEIGHT = 1200, 700
 DELTA = {  # 移動量辞書
     pg.K_UP: (0, -5),
     pg.K_DOWN: (0, +5),
@@ -14,8 +14,9 @@ DELTA = {  # 移動量辞書
 }
 def kk_angle():
     kt_f = pg.transform.flip(pg.image.load("fig/3.png"), True, False)
-    kt_d = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0),
+    kt_d = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 1.0)
     return  {
+        (0, 0):pg.transform.rotozoom(kt_d, 0, 2.0),
         (-5, 0):pg.transform.rotozoom(kt_d, 0, 2.0),
         (-5, +5):pg.transform.rotozoom(kt_d, 45, 2.0),
         (0, +5):pg.transform.rotozoom(kt_f, -90, 2.0),
@@ -48,7 +49,7 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("fig/pg_bg.jpg")
     kk_imgs = kk_angle()    
-    kk_img = kk_imgs([0,0])
+    kk_img = kk_imgs[(0,0)]
     kk_rct = kk_img.get_rect() 
     kk_rct.center = 900, 400
     bb_img = pg.Surface((20, 20))  # 1辺が20の空のSurfaceを作る
@@ -73,6 +74,8 @@ def main():
             if key_lst[k]:
                 sum_mv[0] += v[0]
                 sum_mv[1] += v[1]
+        tup_mv = tuple(sum_mv)
+        kk_img = kk_imgs[tup_mv]
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
