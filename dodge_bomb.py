@@ -13,16 +13,17 @@ DELTA = {  # 移動量辞書
     pg.K_RIGHT: (+5, 0),
 }
 def kk_angle():
-    pg.transform.flip(pg.image.load("fig/3.png"), 0, 2.0),
+    kt_f = pg.transform.flip(pg.image.load("fig/3.png"), True, False)
+    kt_d = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0),
     return  {
-        (-5, 0):pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0),
-        (-5, +5):pg.transform.rotozoom(pg.image.load("fig/3.png"), 45, 2.0),
-        (0, +5):pg.transform.rotozoom(pg.image.load("fig/3.png"), 90, 2.0),
-        (+5, +5):pg.transform.rotozoom(pg.image.load("fig/3.png"), 135, 2.0),
-        (+5, 0):pg.transform.rotozoom(pg.image.load("fig/3.png"), 180, 2.0),
-        (+5, -5):pg.transform.rotozoom(pg.image.load("fig/3.png"), 225, 2.0),
-        (0, -5):pg.transform.rotozoom(pg.image.load("fig/3.png"), 270, 2.0),
-        (-5, -5):pg.transform.rotozoom(pg.image.load("fig/3.png"), 315, 2.0),
+        (-5, 0):pg.transform.rotozoom(kt_d, 0, 2.0),
+        (-5, +5):pg.transform.rotozoom(kt_d, 45, 2.0),
+        (0, +5):pg.transform.rotozoom(kt_f, -90, 2.0),
+        (+5, +5):pg.transform.rotozoom(kt_f, -45, 2.0),
+        (+5, 0):pg.transform.rotozoom(kt_f, 0, 2.0),
+        (+5, -5):pg.transform.rotozoom(kt_f, 45, 2.0),
+        (0, -5):pg.transform.rotozoom(kt_f, 90, 2.0),
+        (-5, -5):pg.transform.rotozoom(kt_d, -45, 2.0),
     }
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -45,9 +46,10 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
-    bg_img = pg.image.load("fig/pg_bg.jpg")    
-    kk_img = pg.transform. rotozoom(pg.image.load("fig/3.png"), 0, 2.0)
-    kk_rct = kk_img.get_rect()
+    bg_img = pg.image.load("fig/pg_bg.jpg")
+    kk_imgs = kk_angle()    
+    kk_img = kk_imgs([0,0])
+    kk_rct = kk_img.get_rect() 
     kk_rct.center = 900, 400
     bb_img = pg.Surface((20, 20))  # 1辺が20の空のSurfaceを作る
     bb_img.set_colorkey((0, 0, 0))
